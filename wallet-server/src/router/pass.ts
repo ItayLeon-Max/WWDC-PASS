@@ -6,7 +6,7 @@ import { generatePass } from "../service/passGenerator";
 const router = require("express").Router();
 
 router.post("/generate", async (req: Request, res: Response) => {
-  const name = req.query.name as string;
+  const name = req.body.name as string;
 
   if (!name) {
     return res.status(400).json({ error: "Missing 'name' query parameter." });
