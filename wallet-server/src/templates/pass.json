@@ -1,0 +1,55 @@
+{
+  "formatVersion": 1,
+  "passTypeIdentifier": "pass.wwdc25",
+  "serialNumber": "WWDC25-0001",
+  "teamIdentifier": "A7992DZ29G",
+  "organizationName": "Itay Leon",
+  "description": "WWDC25 Event Ticket",
+  "foregroundColor": "rgb(0, 0, 0)",
+  "backgroundColor": "rgb(255, 255, 255)",
+  "eventTicket": {
+    "primaryFields": [
+      {
+        "key": "ATTENDEE",
+        "label": "ATTENDEE",
+        "value": "TEMPLATE"
+      }
+    ],
+    "secondaryFields": [
+      {
+        "key": "date",
+        "label": "Date",
+        "value": "June 9–13, 2025"
+      }
+    ],
+    "auxiliaryFields": [
+      {
+        "key": "location",
+        "label": "Location",
+        "value": "Online"
+      }
+    ],
+    "backFields": [
+      {
+        "key": "note",
+        "label": "What's New",
+        "value": "Added support for WWDC25 event display and improved layout."
+      },
+      {
+        "key": "version",
+        "label": "Version",
+        "value": "1.0.0"
+      },
+      {
+        "key": "instagram",
+        "label": "Instagram",
+        "value": "https://instagram.com/2019itay.l"
+      }
+    ]
+  },
+  "barcode": {
+    "format": "PKBarcodeFormatQR",
+    "message": "https://developer.apple.com/wwdc25/?cid=ht-wwdc25-large",
+    "messageEncoding": "iso-8859-1"
+  }
+}

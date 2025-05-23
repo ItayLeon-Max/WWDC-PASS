@@ -1,0 +1,4 @@
+[[headers]]
+  for = "/WWDC25.pkpass"
+  [headers.values]
+  Content-Type = "application/vnd.apple.pkpass"
