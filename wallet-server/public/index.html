@@ -9,9 +9,55 @@
 <body>
   <h1>🎟️ Add Your WWDC25 Pass to Apple Wallet</h1>
   <p>Enter your name to generate a personalized Wallet pass:</p>
-<form action="https://wwdc-pass.onrender.com/pass/generate" method="POST">
-  <input type="text" name="name" placeholder="Your full name" required />
-  <button type="submit">Add to Wallet</button>
-</form>
+
+  <form id="passForm">
+    <input type="text" name="name" placeholder="Your full name" required />
+    <button type="submit">Add to Wallet</button>
+  </form>
+
+  <p id="status" style="color: green; margin-top: 1em;"></p>
+
+  <script>
+    const form = document.getElementById("passForm");
+    const status = document.getElementById("status");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      status.textContent = "Generating pass…";
+
+      const name = form.name.value.trim();
+
+      try {
+        const response = await fetch("/pass/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ name })
+        });
+
+        if (!response.ok) {
+          status.textContent = "Failed to generate pass. Please try again.";
+          return;
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "WWDC25.pkpass";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        window.URL.revokeObjectURL(url);
+        status.textContent = "✅ Your pass has been downloaded!";
+      } catch (err) {
+        console.error("Error:", err);
+        status.textContent = "An error occurred. Please try again.";
+      }
+    });
+  </script>
 </body>
 </html>
