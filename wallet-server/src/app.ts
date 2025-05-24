@@ -6,17 +6,17 @@ import passRouter from "./router/pass";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware for parsing application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.url}`);
+  next();
+});
 
-// Middleware for parsing application/json
+app.use(express.static(path.join(__dirname, "..", "public")));
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Router for handling /pass routes
 app.use("/pass", passRouter);
-
-// Middleware for serving static files from the 'public' directory
-app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.listen(PORT, () => {
   console.log(`🚀 Server is running at http://localhost:${PORT}`);
