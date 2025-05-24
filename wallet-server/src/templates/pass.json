@@ -35,12 +35,12 @@
       {
         "key": "note",
         "label": "What's New",
-        "value": "Added support for WWDC25 event display and improved layout. and added support for docker image"
+        "value": "Added support for WWDC25 event display and improved layout. and fixed logo alignment."
       },
       {
         "key": "version",
         "label": "Version",
-        "value": "1.1.1"
+        "value": "1.1.2"
       },
       {
         "key": "instagram",
