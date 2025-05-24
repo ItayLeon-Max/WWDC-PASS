@@ -3,6 +3,8 @@
   "passTypeIdentifier": "pass.wwdc25",
   "serialNumber": "WWDC25-0001",
   "teamIdentifier": "A7992DZ29G",
+  "webServiceURL": "https://wwdc-pass.wuaze.com/api/passes",
+  "authenticationToken": "e761bf4052cd04fe2452de256cdc1c07",
   "organizationName": "Itay Leon",
   "description": "WWDC25 Event Ticket",
   "foregroundColor": "rgb(0, 0, 0)",
@@ -38,7 +40,7 @@
       {
         "key": "version",
         "label": "Version",
-        "value": "1.0.1"
+        "value": "1.1.0"
       },
       {
         "key": "instagram",

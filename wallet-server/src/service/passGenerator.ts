@@ -25,6 +25,10 @@ export async function generatePass(attendeeName: string): Promise<string> {
     const raw = await fs.readFile(TEMPLATE_PATH, 'utf8');
     const passJson = JSON.parse(raw);
     passJson.eventTicket.primaryFields[0].value = attendeeName;
+    
+    // Add authenticationToken and webServiceURL for push updates
+    passJson.authenticationToken = crypto.randomBytes(16).toString("hex");
+    passJson.webServiceURL = "https://wwdc-pass.onrender.com/api/passes";
 
     const updatedPassPath = path.join(passFolder, 'pass.json');
     await fs.writeFile(updatedPassPath, JSON.stringify(passJson, null, 2));
