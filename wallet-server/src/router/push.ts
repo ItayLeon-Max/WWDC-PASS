@@ -16,6 +16,8 @@ pushRouter.post(
   (req: Request, res: Response) => {
     const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
     const { pushToken } = req.body;
+
+    console.log("📲 Received push token:", pushToken)
     const authHeader = req.headers["authorization"];
 
     if (!authHeader || !authHeader.startsWith("ApplePass ")) {
