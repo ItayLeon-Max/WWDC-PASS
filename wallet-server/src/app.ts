@@ -1,20 +1,15 @@
 import express from "express";
-import dotenv from "dotenv";
-import path from "path";
+import bodyParser from "body-parser";
 import passRouter from "./router/pass";
-import { config } from "./config/config";
-
-dotenv.config();
 
 const app = express();
-const PORT = config.port;
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true })); 
+app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, "../public")));
+app.use(passRouter);
 
-app.use("/pass", passRouter);
+app.use("/api", passRouter); 
 
 app.listen(PORT, () => {
   console.log(`🚀 Server is running at http://localhost:${PORT}`);

@@ -21,7 +21,6 @@ router.post("/generate", async (req: Request, res: Response) => {
         console.error("Download error:", err);
         res.status(500).send("Failed to send pass file.");
       } else {
-        // optionally delete the file after sending
         fs.unlink(passPath, () => {});
       }
     });
