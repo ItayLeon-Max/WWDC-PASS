@@ -9,6 +9,8 @@
   "description": "WWDC25 Event Ticket",
   "foregroundColor": "rgb(0, 0, 0)",
   "backgroundColor": "rgb(255, 255, 255)",
+  "associatedStoreIdentifiers": [640199958],
+  "appLaunchURL": "https://apps.apple.com/app/apple-developer/id640199958",
   "eventTicket": {
     "primaryFields": [
       {
@@ -35,12 +37,12 @@
       {
         "key": "note",
         "label": "What's New",
-        "value": "Added support for WWDC25 event display and improved layout. and fixed logo alignment."
+        "value": "-Added support for WWDC25 event display and improved layout. -fixed logo alignment. -added Apple Developer app logo."
       },
       {
         "key": "version",
         "label": "Version",
-        "value": "1.1.2"
+        "value": "1.1.3"
       },
       {
         "key": "instagram",
