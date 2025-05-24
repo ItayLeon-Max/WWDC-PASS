@@ -51,3 +51,36 @@ button {
 button:hover {
   background-color: #333;
 }
+
+footer {
+  margin-top: 3em;
+  padding: 1.5em 0;
+  text-align: center;
+  font-size: 0.95em;
+  color: #555;
+  background-color: #f5f5f5;
+}
+
+footer p {
+  margin: 0.3em 0;
+}
+
+.footer-links {
+  margin-top: 1em;
+}
+
+.footer-links a {
+  margin: 0 1em;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.footer-links a:hover {
+  transform: scale(1.2);
+}
+
+.footer-links img {
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+}
