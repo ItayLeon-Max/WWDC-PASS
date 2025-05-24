@@ -15,9 +15,11 @@ pushRouter.post(
   "/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber",
   (req: Request, res: Response) => {
     const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
-    const { pushToken } = req.body;
-
-    console.log("📲 Received push token:", req.body.pushToken)
+    // const { pushToken } = req.body;
+    // console.log("📲 Received push token:", req.body.pushToken)
+    console.log("📲 Request body:", req.body);
+    const pushToken = req.body.pushToken || req.body["pushToken"];
+    console.log("📲 Received push token:", pushToken);
     const authHeader = req.headers["authorization"];
 
     if (!authHeader || !authHeader.startsWith("ApplePass ")) {
