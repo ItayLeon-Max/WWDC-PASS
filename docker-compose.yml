@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  server:
+    build:
+      context: ./wallet-server
+    container_name: wallet-server
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  client:
+    image: nginx:alpine
+    container_name: wallet-client
+    ports:
+      - "8080:80"
+    volumes:
+      - ./wallet-client:/usr/share/nginx/html:ro
