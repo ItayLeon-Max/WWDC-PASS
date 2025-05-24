@@ -12,7 +12,7 @@ interface Registration {
 const registrations: Record<string, Registration> = {};
 
 pushRouter.post(
-  "/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber",
+  "/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber",
   (req: Request, res: Response) => {
     const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
     const { pushToken } = req.body;
