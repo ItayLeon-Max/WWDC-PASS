@@ -6,6 +6,8 @@ import { generatePass } from "../service/passGenerator";
 const router = require("express").Router();
 
 router.post("/generate", async (req: Request, res: Response) => {
+  console.log("BODY RECEIVED:", req.body); 
+
   const name = req.body.name as string;
 
   if (!name) {
