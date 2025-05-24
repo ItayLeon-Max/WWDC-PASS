@@ -6,12 +6,11 @@ import { generatePass } from "../service/passGenerator";
 const router = require("express").Router();
 
 router.post("/generate", async (req: Request, res: Response) => {
-  console.log("BODY RECEIVED:", req.body); 
-
+  console.log("✅ Got request to /pass/generate");
   const name = req.body.name as string;
 
   if (!name) {
-    return res.status(400).json({ error: "Missing 'name' query parameter." });
+    return res.status(400).json({ error: "Missing 'name' parameter." });
   }
 
   try {
@@ -27,9 +26,9 @@ router.post("/generate", async (req: Request, res: Response) => {
       }
     });
   } catch (error) {
-    console.error("Error generating pass:", error);
+    console.error("❌ Failed to generate pass:", error);
     res.status(500).json({ error: "Failed to generate pass." });
   }
 });
 
-export default router;
+export default router; 
