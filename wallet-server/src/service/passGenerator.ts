@@ -9,6 +9,7 @@ const ICON_PATH = path.join(__dirname, '..', 'assets', 'icon.png');
 const LOGO_PATH = path.join(__dirname, '..', 'assets', 'logo.png');
 const CERTS_PATH = path.join(__dirname, '..', '..', 'certs');
 const OUTPUT_DIR = path.join(__dirname, '..', '..', 'assets');
+const VERSION_PATH = path.join(__dirname, '..', '..', 'public', 'pass', 'version.json');
 
 export async function generatePass(attendeeName: string): Promise<string> {
   console.log("🟡 Starting pass generation for:", attendeeName);
@@ -25,10 +26,25 @@ export async function generatePass(attendeeName: string): Promise<string> {
     const raw = await fs.readFile(TEMPLATE_PATH, 'utf8');
     const passJson = JSON.parse(raw);
     passJson.eventTicket.primaryFields[0].value = attendeeName;
-    
+
     // Add authenticationToken and webServiceURL for push updates
     passJson.authenticationToken = crypto.randomBytes(16).toString("hex");
     passJson.webServiceURL = "https://wwdc-pass.onrender.com/api/passes";
+
+    // Inject version from version.json
+    const versionRaw = await fs.readFile(VERSION_PATH, 'utf8');
+    const versionData = JSON.parse(versionRaw);
+    const version = versionData.version || "1.0.0";
+
+    // Add version to backFields
+    passJson.eventTicket.backFields = [
+      ...(passJson.eventTicket.backFields || []).filter((f: { key: string }) => f.key !== "version"),
+      {
+        key: "version",
+        label: "Version",
+        value: version
+      }
+    ];
 
     const updatedPassPath = path.join(passFolder, 'pass.json');
     await fs.writeFile(updatedPassPath, JSON.stringify(passJson, null, 2));
