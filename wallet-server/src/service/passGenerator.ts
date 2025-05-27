@@ -31,12 +31,12 @@ export async function generatePass(attendeeName: string): Promise<string> {
     passJson.authenticationToken = crypto.randomBytes(16).toString("hex");
     passJson.webServiceURL = "https://wwdc-pass.onrender.com/api/passes";
 
-    // Inject version from version.json
+    // Load version from version.json
     const versionRaw = await fs.readFile(VERSION_PATH, 'utf8');
     const versionData = JSON.parse(versionRaw);
     const version = versionData.version || "1.0.0";
 
-    // Add version to backFields
+    // Update or add version field in backFields
     passJson.eventTicket.backFields = [
       ...(passJson.eventTicket.backFields || []).filter((f: { key: string }) => f.key !== "version"),
       {
