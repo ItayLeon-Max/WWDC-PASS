@@ -84,3 +84,15 @@ footer p {
   height: 32px;
   vertical-align: middle;
 }
+
+#updateNotification {
+  background-color: #fffae5;
+  border: 1px solid #f5c518;
+  padding: 1em;
+  margin-top: 2em;
+  text-align: center;
+  border-radius: 8px;
+}
+#updateNotification.hidden {
+  display: none;
+}

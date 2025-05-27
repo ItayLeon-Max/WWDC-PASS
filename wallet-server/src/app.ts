@@ -18,6 +18,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static(path.join(__dirname, "..", "public")));
+// ✅ Serves static files, including version.json from /public/pass/
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
