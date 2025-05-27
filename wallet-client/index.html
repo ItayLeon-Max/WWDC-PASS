@@ -17,10 +17,36 @@
 
   <p id="status" style="color: green; margin-top: 1em;"></p>
 
+  <!-- 🔔 Pass Update Info -->
+  <section id="pass-updates" style="margin-top: 3em;">
+    <h2>📢 Pass Updates</h2>
+    <p>Current Version on Server: <span id="serverVersion">Checking...</span></p>
+    <button id="refreshVersionBtn">Refresh</button>
+    <button id="updatePassBtn" style="margin-left: 1em;">Update Your Pass</button>
+    <p id="updateStatus" style="color: green; margin-top: 0.5em;"></p>
+  </section>
+
+  <footer>
+    <p>This site allows you to generate your personalized Apple Wallet pass for WWDC25 using your full name.</p>
+    <p>© 2025 @2019itay.l — All rights reserved.</p>
+
+    <div class="footer-links">
+      <a href="https://github.com/ItayLeon-Max" target="_blank" aria-label="GitHub">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" />
+      </a>
+      <a href="https://instagram.com/2019itay.l" target="_blank" aria-label="Instagram">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
+      </a>
+    </div>
+  </footer>
+
   <script>
     const form = document.getElementById("passForm");
     const status = document.getElementById("status");
+    const versionText = document.getElementById("serverVersion");
+    const updateStatus = document.getElementById("updateStatus");
 
+    // Submit form to generate new pass
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       status.textContent = "Generating pass…";
@@ -58,19 +84,65 @@
         status.textContent = "An error occurred. Please try again.";
       }
     });
-  </script>
-<footer>
-  <p>This site allows you to generate your personalized Apple Wallet pass for WWDC25 using your full name.</p>
-  <p>© 2025 @2019itay.l — All rights reserved.</p>
 
-  <div class="footer-links">
-    <a href="https://github.com/ItayLeon-Max" target="_blank" aria-label="GitHub">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" />
-    </a>
-    <a href="https://instagram.com/2019itay.l" target="_blank" aria-label="Instagram">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
-    </a>
-  </div>
-</footer>
+    // Refresh pass version from version.json
+    async function fetchPassVersion() {
+      try {
+        const response = await fetch("/pass/version.json");
+        const data = await response.json();
+        versionText.textContent = data.version || "Unknown";
+        updateStatus.textContent = "";
+      } catch (err) {
+        versionText.textContent = "Unavailable";
+        updateStatus.textContent = "❌ Failed to fetch version info.";
+      }
+    }
+
+    // Trigger pass update
+    document.getElementById("updatePassBtn").addEventListener("click", async () => {
+      const name = form.name.value.trim();
+      if (!name) {
+        updateStatus.textContent = "Please enter your name above before updating.";
+        return;
+      }
+
+      updateStatus.textContent = "🔄 Updating your pass...";
+      try {
+        const response = await fetch("https://wwdc-pass.onrender.com/pass/generate?update=true", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ name })
+        });
+
+        if (!response.ok) {
+          updateStatus.textContent = "❌ Failed to update the pass.";
+          return;
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "WWDC25.pkpass";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        window.URL.revokeObjectURL(url);
+        updateStatus.textContent = "✅ Pass updated and downloaded!";
+      } catch (err) {
+        console.error(err);
+        updateStatus.textContent = "❌ Error while updating pass.";
+      }
+    });
+
+    document.getElementById("refreshVersionBtn").addEventListener("click", fetchPassVersion);
+
+    // Initial load
+    fetchPassVersion();
+  </script>
 </body>
 </html>
