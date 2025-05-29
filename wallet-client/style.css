@@ -125,3 +125,51 @@ footer p {
     transform: translateY(0);
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1c1c1e;
+    color: #f2f2f7;
+  }
+
+  form {
+    background-color: #2c2c2e;
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
+  }
+
+  input[type="text"] {
+    background-color: #3a3a3c;
+    color: #fff;
+    border: 1px solid #555;
+  }
+
+  input[type="text"]::placeholder {
+    color: #bbb;
+  }
+
+button {
+  background: #ffffff;
+  color: #000000;
+}
+
+button:hover {
+  background: #e5e5e5;
+  transform: scale(1.03);
+}
+
+  footer {
+    background-color: #1c1c1e;
+    color: #aaa;
+  }
+
+  #updateNotification {
+    background-color: #2c2c2e;
+    border: 1px solid #f5c518;
+    color: #f5c518;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+  }
+
+  .footer-links img {
+    filter: brightness(0.8);
+  }
+}
