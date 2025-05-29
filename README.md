@@ -1,18 +1,22 @@
 # WWDC-PASS
 
-# WWDC25 Wallet Pass Generator
+## WWDC25 Wallet Pass Generator
 
 This project allows users to generate a personalized Apple Wallet pass for WWDC25 by entering their name. It consists of a **frontend (Netlify)** and a **backend (Render)** working together.
 
 ## 🔗 Live Website
 
 Frontend URL: [https://stirring-scone-be6f45.netlify.app/](https://stirring-scone-be6f45.netlify.app/)
+Backend Base URL: [https://wwdc-pass.wuaze.com/](https://wwdc-pass.wuaze.com/)
+
+---
 
 ## 🚀 What the App Does
 
 * User enters their name.
 * Backend generates a `.pkpass` file dynamically.
 * File is downloaded automatically, and can be opened in Apple Wallet.
+* System checks for updated pass versions and displays a banner if a new version is available.
 
 ---
 
@@ -22,76 +26,74 @@ Frontend URL: [https://stirring-scone-be6f45.netlify.app/](https://stirring-scon
 WWDC-PASS
 ├── wallet-client          # Frontend (Netlify hosted)
 │   ├── index.html         # HTML page with form
-│   ├── style.css          # Styling
+│   ├── style.css          # Styling including dark mode
 │   └── netlify.toml       # Netlify config (optional)
 │
 ├── wallet-server          # Backend (Render hosted)
-    ├── src
-    │   ├── router
-    │   │   └── pass.ts      # Express route handling /pass/generate
-    │   ├── service
-    │   │   └── passGenerator.ts # Pass generation logic
-    │   └── app.ts          # Main Express server
-    ├── certs              # Certificates for signing passes
-    ├── assets             # icon.png, logo.png used in pass
-    └── public             # Optional public folder for static files
+│   ├── src
+│   │   ├── router
+│   │   │   └── pass.ts              # Express route for pass handling
+│   │   ├── service
+│   │   │   └── passGenerator.ts     # Logic for creating the pass
+│   │   └── app.ts                  # Express entry point
+│   ├── certs              # Apple certificates
+│   ├── assets             # icon.png, logo.png used in pass
+│   └── public
+│       └── pass
+│           └── version.json       # Version metadata for updates
 ```
 
 ---
 
-## 🌐 Deploy Instructions
+## 🌐 Deployment
 
 ### Backend (Render)
 
-1. Push the `wallet-server` folder to GitHub.
-2. Go to [Render](https://render.com/), create a new **Web Service**.
-3. Connect to your GitHub repo.
-4. Set the following:
+1. Push `wallet-server` folder to GitHub.
+2. On [Render](https://render.com/), create a **Web Service**:
 
+   * Root Directory: `wallet-server`
    * Build Command: `npm install && npm run build`
    * Start Command: `node dist/app.js`
-   * Root Directory: `wallet-server`
-5. Deploy. Once live, copy your Render URL (e.g. `https://wallet-server.onrender.com`).
+   * Environment Variable: `PORT` (Render uses this automatically)
 
 ### Frontend (Netlify)
 
-1. Push the `wallet-client` folder to GitHub.
-2. Go to [Netlify](https://netlify.com/) and connect the repo.
-3. Set root directory to `wallet-client`.
-4. Deploy site.
-5. Inside `wallet-client/index.html`, make sure the fetch URL matches your Render URL:
+1. Push `wallet-client` to GitHub or drag-and-drop via Netlify UI.
+2. Root directory: `wallet-client`
+3. Deploy.
+4. In `index.html`, make sure all fetch calls use:
 
 ```js
-fetch("https://your-render-url.com/pass/generate?name=XYZ")
+fetch("https://wwdc-pass.wuaze.com/pass/generate")
 ```
 
 ---
 
 ## 🤔 Troubleshooting
 
-* **CORS error?** Ensure your Render backend has `cors` enabled:
+* **CORS error?**
+  Ensure the backend includes:
 
-```ts
-import cors from "cors";
-app.use(cors());
-```
+  ```ts
+  import cors from 'cors';
+  app.use(cors());
+  ```
+
+* **Dark mode not working in Safari?**
+  Clear Safari's cached CSS (Settings > Safari > Advanced > Website Data).
 
 * **Pass not downloading?**
+  Double-check that the server returns:
 
-  * Ensure your backend route is `GET /pass/generate`
-  * The browser only allows downloads from GET, not POST (hence we switched)
-
----
-
-## 📅 Author
-
-Developed by Itay Leon, 2025. Enjoy WWDC! 🌟
+  ```
+  Content-Disposition: attachment; filename=pass.pkpass
+  Content-Type: application/vnd.apple.pkpass
+  ```
 
 ---
 
 ## 📲 For Users
-
-To generate your WWDC25 Wallet Pass:
 
 1. Visit [https://stirring-scone-be6f45.netlify.app/](https://stirring-scone-be6f45.netlify.app/)
 2. Enter your name
@@ -99,128 +101,43 @@ To generate your WWDC25 Wallet Pass:
 4. Your `.pkpass` will be downloaded automatically
 5. Open it in **Apple Wallet**
 
+---
 
-# WWDC25 Wallet Pass Generator
+## 🧪 Version Check Feature
 
-ברוכים הבאים לפרויקט יצירת כרטיס Wallet לאירוע WWDC25 🎟️🍎
-
-## ✨ מה עושה הפרויקט?
-
-הפרויקט מאפשר למשתמשים להזין את שמם האישי ולקבל כרטיס Apple Wallet מותאם אישית שכולל את שמם, שאותו ניתן להוסיף ישירות לאפליקציית הארנק ב-iPhone.
+* On load, the client fetches the latest version from `version.json`.
+* If the version has changed since the last load, a yellow notification appears.
+* Clicking "Update Now" refreshes the page and stores the current version in `localStorage`.
 
 ---
 
-## 🚀 לינק לאתר החי (Frontend)
+### מחולל כרטיסים ל-WWDC25 ב־Apple Wallet
 
-[https://stirring-scone-be6f45.netlify.app/](https://stirring-scone-be6f45.netlify.app/)
+הפרויקט מאפשר למשתמשים להזין את שמם ולקבל כרטיס Apple Wallet מותאם אישית.
 
-שם תוכל להזין את שמך המלא, ללחוץ על "Add to Wallet" והכרטיס ייפתח במסך (או יישמר כהורדה במכשירים שאינם תומכים).
+### כתובות חשובות
 
----
+* אתר: [https://stirring-scone-be6f45.netlify.app/](https://stirring-scone-be6f45.netlify.app/)
+* שרת: [https://wwdc-pass.wuaze.com/](https://wwdc-pass.wuaze.com/)
 
-## 🚧 פרויקט השרת (Backend)
+### כיצד זה עובד?
 
-השרת רץ על Render ומאזין לבקשות אל:
+1. המשתמש מזין את שמו בטופס.
+2. השרת יוצר קובץ `.pkpass` עם שמו.
+3. הקובץ נחתם בתעודת Apple ומורד מיידית למכשיר.
+4. ניתן לפתוח אותו ב־Apple Wallet באייפון.
 
-```
-POST https://wwdc-pass.onrender.com/pass/generate
-```
+### תמיכה בעדכוני גרסה
 
-או
+אם יש גרסה חדשה לכרטיס, מופיעה הודעת עדכון בעמוד, עם אפשרות לעדכון מיידי.
 
-```
-GET  https://wwdc-pass.onrender.com/pass/generate?name=John%20Appleseed
-```
+### דרישות למשתמשים
 
-השרת מבצע את הפעולות הבאות:
-
-1. יוצר תיקייה זמנית לכל כרטיס.
-2. טוען את תבנית `pass.json` ומכניס לתוכה את השם.
-3. מוסיף אייקון ולוגו.
-4. יוצר חתימה דיגיטלית עם OpenSSL.
-5. יוצר קובץ `.pkpass`.
-6. מחזיר את הקובץ ללקוח להורדה או פתיחה מיידית.
+* iPhone עם Apple Wallet
+* Safari פתוח (במחשב, ייתכן שתתבצע הורדה בלבד)
 
 ---
 
-## 📂 מבנה הפרויקט
+## 👨‍💻 מפתח
 
-```
-WWDC-PASS/
-├── wallet-client/            # צד לקוח (Netlify)
-│   ├── index.html            # טופס ההזנה וקריאה לשרת
-│   ├── style.css             # עיצוב בסיסי
-│   ├── netlify.toml          # הגדרות Netlify (אם רלוונטי)
-│
-├── wallet-server/           # צד שרת (Render)
-│   ├── src/
-│   │   ├── router/pass.ts    # מסלול שמטפל בבקשת יצירת כרטיס
-│   │   ├── service/passGenerator.ts # הגנרטור עצמו
-│   │   ├── templates/pass.json     # תבנית בסיסית
-│   │   └── assets/                 # קבצי icon/logo
-│   ├── public/index.html    # קובץ HTML תצוגתי אם רוצים גם מהשרת
-│   └── app.ts               # נקודת כניסה לשרת Express
-```
-
----
-
-## 🌐 העלאת צד השרת ל-Render
-
-1. היכנס ל-[https://render.com](https://render.com).
-2. לחץ על "New Web Service".
-3. חבר את הריפו של `wallet-server`.
-4. הגדר את ה-Build Command:
-
-```
-npm install && npm run build
-```
-
-5. הגדר את Start Command:
-
-```
-node dist/app.js
-```
-
-6. ודא שפורט 3000 פתוח (`process.env.PORT` משומש).
-
----
-
-## 🌐 העלאת צד לקוח ל-Netlify
-
-1. היכנס ל-[https://app.netlify.com](https://app.netlify.com).
-2. לחץ על "Add new site" > "Deploy manually".
-3. בחר את תיקיית `wallet-client/` מהמחשב שלך.
-4. לחץ על Deploy Site.
-5. לאחר סיום תקבל לינק – לדוגמה:
-
-```
-https://stirring-scone-be6f45.netlify.app/
-```
-
----
-
-## ✅ שימוש באתר
-
-1. גש ללינק באתר החי.
-2. הזן את שמך.
-3. לחץ על "Add to Wallet".
-4. הכרטיס ייפתח מידית להוספה ל-Wallet באייפון (או ירד כקובץ במחשב).
-
----
-
-## 📅 מה נדרש מהמשתמש?
-
-* מכשיר תומך Apple Wallet (iPhone / Safari).
-* שם להזנה בטופס.
-
----
-
-## ⚡ טיפים למפתחים
-
-* כדי ש-iPhone יפתח אוטומטית את הכרטיס – מומלץ להשתמש ב-`window.location.href = urlToPass`.
-* קובץ `.pkpass` חייב להיחתם עם תעודה תקפה של Apple.
-* אין גישת GET רגילה למסלול `/pass/generate` אלא רק אם שינית בקוד.
-
----
-
-בהצלחה! ואם יש צורך – תתיידע 😉
+פותח על ידי איתי ליאון, 2025. בהצלחה ב־WWDC! 🍎
